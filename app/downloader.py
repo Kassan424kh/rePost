@@ -33,7 +33,7 @@ def download_short(url: str, download_dir: str) -> Tuple[Path, dict]:
                 "Chrome/120.0.0.0 Safari/537.36"
             )
         },
-        "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
+        "extractor_args": {"youtube": {"player_client": ["web"]}},
         "merge_output_format": "mp4",
     }
 
