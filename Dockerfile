@@ -9,7 +9,8 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir --upgrade yt-dlp
+    pip install --no-cache-dir --upgrade yt-dlp && 
+    yt-dlp --remote-components ejs:github || true
 
 COPY app/ ./app/
 

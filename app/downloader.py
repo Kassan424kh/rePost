@@ -39,6 +39,7 @@ def download_short(url: str, download_dir: str) -> Tuple[Path, dict]:
         "extractor_args": {"youtube": {"player_client": ["web"]}},
         "merge_output_format": "mp4",
         "geo_bypass": True,
+        "remote_components": ["ejs:github"],
     }
 
     if cookies_path:
