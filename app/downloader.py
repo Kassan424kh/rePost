@@ -48,11 +48,11 @@ def download_short(url: str, download_dir: str) -> Tuple[Path, dict]:
         return _download_with_options(
             url,
             download_path,
-            {**base_opts, "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"},
+            {**base_opts, "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/best"},
         )
     except Exception:
         return _download_with_options(
             url,
             download_path,
-            {**base_opts, "format": "best"},
+            {**base_opts, "format": "bestvideo*+bestaudio*/best"},
         )
