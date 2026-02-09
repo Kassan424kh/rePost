@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 
 COPY app/ ./app/
 
-RUN mkdir -p /app/downloads
+RUN mkdir -p /app/downloads && chmod 777 /app/downloads
 
 VOLUME ["/app/downloads", "/app/secrets"]
 
