@@ -7,9 +7,6 @@ services:
       - .env
     volumes:
       - ./downloads:/app/downloads
-      - /credentials.json:/app/secrets/credentials.json:ro
-      - /token.json:/app/secrets/token.json
-      - /youtube_cookies.txt:/app/secrets/youtube_cookies.txt:ro
     environment:
       - YOUTUBE_CLIENT_SECRETS_PATH=/app/secrets/credentials.json
       - YOUTUBE_TOKEN_PATH=/app/secrets/token.json
