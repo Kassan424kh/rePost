@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./downloads:/app/downloads
+      - /home/shareFolder/rePost/downloads:/app/downloads
       - /home/shareFolder/rePost:/app/secrets
     environment:
       - YOUTUBE_CLIENT_SECRETS_PATH=/app/secrets/credentials.json
