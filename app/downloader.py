@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Tuple
+import os
 
 from yt_dlp import YoutubeDL
 
@@ -19,6 +20,8 @@ def download_short(url: str, download_dir: str) -> Tuple[Path, dict]:
     download_path = Path(download_dir)
     download_path.mkdir(parents=True, exist_ok=True)
 
+    cookies_path = os.environ.get("YTDLP_COOKIES_PATH")
+
     base_opts = {
         "outtmpl": str(download_path / "%(id)s.%(ext)s"),
         "noplaylist": True,
@@ -35,7 +38,11 @@ def download_short(url: str, download_dir: str) -> Tuple[Path, dict]:
         },
         "extractor_args": {"youtube": {"player_client": ["web"]}},
         "merge_output_format": "mp4",
+        "geo_bypass": True,
     }
+
+    if cookies_path:
+        base_opts["cookiefile"] = cookies_path
 
     try:
         return _download_with_options(
