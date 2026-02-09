@@ -12,3 +12,4 @@ services:
     environment:
       - YOUTUBE_CLIENT_SECRETS_PATH=/app/secrets/credentials.json
       - YOUTUBE_TOKEN_PATH=/app/secrets/token.json
+      - DOWNLOAD_DIR=/app/downloads
