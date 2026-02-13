@@ -15,6 +15,8 @@ COPY app/ ./app/
 
 RUN mkdir -p /app/downloads && chmod 777 /app/downloads
 
+RUN echo "v1"
+
 VOLUME ["/app/downloads", "/app/secrets"]
 
 CMD ["python", "-m", "app.main"]
