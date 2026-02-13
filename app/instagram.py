@@ -87,8 +87,14 @@ def upload_reel(
     try:
         media = client.clip_upload(path=str(file_path), caption=caption)
     except Exception as exc:
+        error_text = str(exc)
+        if "challenge_required" in error_text.lower():
+            raise InstagramUploadError(
+                "Instagram challenge required. Complete verification once in the Instagram mobile app/web for this account, then refresh INSTAGRAM_SESSION_ID and retry from the same trusted IP/device."
+            ) from exc
         raise InstagramUploadError(f"Instagram reel upload failed: {exc}") from exc
 
+    session_file.parent.mkdir(parents=True, exist_ok=True)
     session_file.write_text(client.dumps_settings())
     media_id = getattr(media, "id", None) or str(getattr(media, "pk", ""))
     return str(media_id)
