@@ -33,6 +33,10 @@ class Config:
     instagram_session_id: str
     instagram_session_path: str
     instagram_caption_suffix: str
+    instagram_upload_method: str
+    instagram_graph_access_token: str
+    instagram_graph_ig_user_id: str
+    instagram_graph_video_url_template: str
     download_dir: str
     allow_duplicate_uploads: bool
 
@@ -91,6 +95,18 @@ class Config:
             instagram_caption_suffix=os.environ.get(
                 "INSTAGRAM_CAPTION_SUFFIX", "#reels"
             ),
+            instagram_upload_method=os.environ.get(
+                "INSTAGRAM_UPLOAD_METHOD", "instagrapi"
+            ).strip().lower(),
+            instagram_graph_access_token=os.environ.get(
+                "INSTAGRAM_GRAPH_ACCESS_TOKEN", ""
+            ).strip(),
+            instagram_graph_ig_user_id=os.environ.get(
+                "INSTAGRAM_GRAPH_IG_USER_ID", ""
+            ).strip(),
+            instagram_graph_video_url_template=os.environ.get(
+                "INSTAGRAM_GRAPH_VIDEO_URL_TEMPLATE", ""
+            ).strip(),
             download_dir=os.environ.get("DOWNLOAD_DIR", "downloads"),
             allow_duplicate_uploads=_get_bool(
                 os.environ.get("ALLOW_DUPLICATE_UPLOADS"), False

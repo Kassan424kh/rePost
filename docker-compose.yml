@@ -5,13 +5,12 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+
     volumes:
       - /home/shareFolder/rePost/downloads:/app/downloads
       - /home/shareFolder/rePost:/app/secrets
+
     environment:
-      - ENABLE_YOUTUBE_UPLOAD=true
-      - ENABLE_TIKTOK_UPLOAD=true
-      - ENABLE_INSTAGRAM_UPLOAD=true
       - YOUTUBE_CLIENT_SECRETS_PATH=/app/secrets/credentials.json
       - YOUTUBE_TOKEN_PATH=/app/secrets/token.json
       - INSTAGRAM_SESSION_PATH=/app/secrets/instagram_session.json

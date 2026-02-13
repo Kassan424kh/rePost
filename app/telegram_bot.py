@@ -8,6 +8,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filte
 
 from .config import Config
 from .downloader import download_short
+from .instagram_graph import upload_reel_from_url
 from .instagram import upload_reel
 from .tiktok import upload_video as upload_tiktok_video
 from .youtube import upload_short
@@ -111,22 +112,54 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
                     failures.append(f"TikTok: {exc}")
 
         if config.enable_instagram_upload:
-            if not config.instagram_username or not config.instagram_password:
-                failures.append("Instagram: missing INSTAGRAM_USERNAME or INSTAGRAM_PASSWORD")
-            else:
-                try:
-                    media_id = upload_reel(
-                        file_path=file_path,
-                        caption=caption,
-                        username=config.instagram_username,
-                        password=config.instagram_password,
-                        session_id=config.instagram_session_id,
-                        session_path=config.instagram_session_path,
+            if config.instagram_upload_method == "graph":
+                if (
+                    not config.instagram_graph_access_token
+                    or not config.instagram_graph_ig_user_id
+                    or not config.instagram_graph_video_url_template
+                ):
+                    failures.append(
+                        "Instagram: graph method requires INSTAGRAM_GRAPH_ACCESS_TOKEN, INSTAGRAM_GRAPH_IG_USER_ID, and INSTAGRAM_GRAPH_VIDEO_URL_TEMPLATE"
                     )
-                    results.append(f"Instagram reel media id: {media_id}")
-                except Exception as exc:
-                    logging.exception("Instagram upload failed")
-                    failures.append(f"Instagram: {exc}")
+                else:
+                    try:
+                        video_url = config.instagram_graph_video_url_template.format(
+                            filename=file_path.name,
+                            stem=file_path.stem,
+                        )
+                        media_id = upload_reel_from_url(
+                            ig_user_id=config.instagram_graph_ig_user_id,
+                            access_token=config.instagram_graph_access_token,
+                            video_url=video_url,
+                            caption=caption,
+                        )
+                        results.append(f"Instagram reel media id: {media_id}")
+                    except Exception as exc:
+                        logging.exception("Instagram Graph upload failed")
+                        failures.append(f"Instagram: {exc}")
+            elif config.instagram_upload_method == "instagrapi":
+                if not config.instagram_username and not config.instagram_session_id:
+                    failures.append(
+                        "Instagram: missing auth. Set INSTAGRAM_SESSION_ID or INSTAGRAM_USERNAME/INSTAGRAM_PASSWORD"
+                    )
+                else:
+                    try:
+                        media_id = upload_reel(
+                            file_path=file_path,
+                            caption=caption,
+                            username=config.instagram_username,
+                            password=config.instagram_password,
+                            session_id=config.instagram_session_id,
+                            session_path=config.instagram_session_path,
+                        )
+                        results.append(f"Instagram reel media id: {media_id}")
+                    except Exception as exc:
+                        logging.exception("Instagram upload failed")
+                        failures.append(f"Instagram: {exc}")
+            else:
+                failures.append(
+                    f"Instagram: unsupported INSTAGRAM_UPLOAD_METHOD={config.instagram_upload_method}"
+                )
 
         if not results and failures:
             raise RuntimeError("; ".join(failures))

@@ -60,11 +60,22 @@ On first run, you will be prompted to authorize the YouTube account.
 
 ### Instagram
 
+- `INSTAGRAM_UPLOAD_METHOD=instagrapi` (`instagrapi` or `graph`)
 - `INSTAGRAM_USERNAME=...`
 - `INSTAGRAM_PASSWORD=...`
 - `INSTAGRAM_SESSION_ID=...` (optional, preferred if login endpoint is blocked)
 - `INSTAGRAM_SESSION_PATH=instagram_session.json`
 - `INSTAGRAM_CAPTION_SUFFIX=#reels`
+
+### Instagram Graph API (alternative upload method)
+
+When `INSTAGRAM_UPLOAD_METHOD=graph`, set:
+
+- `INSTAGRAM_GRAPH_ACCESS_TOKEN=...`
+- `INSTAGRAM_GRAPH_IG_USER_ID=...`
+- `INSTAGRAM_GRAPH_VIDEO_URL_TEMPLATE=https://your-public-host/videos/{filename}`
+
+`INSTAGRAM_GRAPH_VIDEO_URL_TEMPLATE` must point to a publicly reachable URL for the downloaded file. Supported placeholders: `{filename}` and `{stem}`.
 
 ## Notes
 
@@ -73,3 +84,4 @@ On first run, you will be prompted to authorize the YouTube account.
 - TikTok uploads require a valid user access token from TikTok's API.
 - Instagram uploads use account login via `instagrapi`; first login may require verification/challenge handling.
 - If Instagram returns login block errors (for example HTTP 572), use `INSTAGRAM_SESSION_ID` from an already logged-in account session.
+- For a non-login-based method, use `INSTAGRAM_UPLOAD_METHOD=graph` with a Meta Graph API access token and IG user ID.
