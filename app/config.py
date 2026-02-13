@@ -30,6 +30,7 @@ class Config:
     tiktok_disable_stitch: bool
     instagram_username: str
     instagram_password: str
+    instagram_session_id: str
     instagram_session_path: str
     instagram_caption_suffix: str
     download_dir: str
@@ -83,6 +84,7 @@ class Config:
             ),
             instagram_username=os.environ.get("INSTAGRAM_USERNAME", "").strip(),
             instagram_password=os.environ.get("INSTAGRAM_PASSWORD", "").strip(),
+            instagram_session_id=os.environ.get("INSTAGRAM_SESSION_ID", "").strip(),
             instagram_session_path=os.environ.get(
                 "INSTAGRAM_SESSION_PATH", "instagram_session.json"
             ),

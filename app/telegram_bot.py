@@ -120,6 +120,7 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
                         caption=caption,
                         username=config.instagram_username,
                         password=config.instagram_password,
+                        session_id=config.instagram_session_id,
                         session_path=config.instagram_session_path,
                     )
                     results.append(f"Instagram reel media id: {media_id}")

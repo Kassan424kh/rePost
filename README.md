@@ -62,6 +62,7 @@ On first run, you will be prompted to authorize the YouTube account.
 
 - `INSTAGRAM_USERNAME=...`
 - `INSTAGRAM_PASSWORD=...`
+- `INSTAGRAM_SESSION_ID=...` (optional, preferred if login endpoint is blocked)
 - `INSTAGRAM_SESSION_PATH=instagram_session.json`
 - `INSTAGRAM_CAPTION_SUFFIX=#reels`
 
@@ -71,3 +72,4 @@ On first run, you will be prompted to authorize the YouTube account.
 - The same downloaded video file is reused for all enabled platforms.
 - TikTok uploads require a valid user access token from TikTok's API.
 - Instagram uploads use account login via `instagrapi`; first login may require verification/challenge handling.
+- If Instagram returns login block errors (for example HTTP 572), use `INSTAGRAM_SESSION_ID` from an already logged-in account session.

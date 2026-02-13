@@ -14,10 +14,13 @@ def upload_reel(
     caption: str,
     username: str,
     password: str,
+    session_id: str,
     session_path: str,
 ) -> str:
-    if not username or not password:
-        raise InstagramUploadError("Missing Instagram username or password")
+    if not session_id and (not username or not password):
+        raise InstagramUploadError(
+            "Missing Instagram credentials: provide INSTAGRAM_SESSION_ID or username/password"
+        )
 
     instagrapi_module = importlib.import_module("instagrapi")
     client_class = getattr(instagrapi_module, "Client")
@@ -36,9 +39,24 @@ def upload_reel(
             logged_in = False
 
     if not logged_in:
+        if session_id:
+            try:
+                client.login_by_sessionid(session_id)
+                logged_in = True
+            except Exception as exc:
+                raise InstagramUploadError(
+                    f"Instagram session login failed: {exc}"
+                ) from exc
+
+    if not logged_in:
         try:
             client.login(username, password)
         except Exception as exc:
+            error_text = str(exc)
+            if "572" in error_text or "accounts/login" in error_text:
+                raise InstagramUploadError(
+                    "Instagram login blocked (HTTP 572). Use INSTAGRAM_SESSION_ID from a valid logged-in session or run from a trusted residential IP."
+                ) from exc
             raise InstagramUploadError(f"Instagram login failed: {exc}") from exc
 
     try:
